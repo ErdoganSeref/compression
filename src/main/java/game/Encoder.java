@@ -100,16 +100,14 @@ public class Encoder {
 
     public static class DecodeResult {
         public final String pgnMoves[];
-        public final Map<Integer, Piece> pieces;
-        public final Set<Integer> unmovedRooks;
+        public final Board board;
         public final int halfMoveClock;
         public final byte positionHashes[];
         public final String lastUci;
 
-        public DecodeResult(String pgnMoves[], Map<Integer, Piece> pieces, Set<Integer> unmovedRooks, int halfMoveClock, byte positionHashes[], String lastUci) {
+        public DecodeResult(String pgnMoves[], Board board, int halfMoveClock, byte positionHashes[], String lastUci) {
             this.pgnMoves = pgnMoves;
-            this.pieces = pieces;
-            this.unmovedRooks = unmovedRooks;
+            this.board = board;
             this.halfMoveClock = halfMoveClock;
             this.positionHashes = positionHashes;
             this.lastUci = lastUci;
@@ -158,8 +156,7 @@ public class Encoder {
 
         return new DecodeResult(
             output,
-            board.pieceMap(),
-            Bitboard.squareSet(board.castlingRights),
+            board,
             plies - 1 - lastZeroingPly,
             Arrays.copyOf(positionHashes, 3 * (plies - lastIrreversiblePly)),
             lastUci);
